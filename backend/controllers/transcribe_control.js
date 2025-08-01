@@ -14,6 +14,8 @@ const getMethod =async (req, res) => {
 const postMethod =async (req, res) => {
     try 
     {
+        console.log(req.file);
+        
         return res.status(200).json({message: "This is a post method"})
         
     } 
