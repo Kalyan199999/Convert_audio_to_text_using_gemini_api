@@ -1,5 +1,8 @@
-
 const conversion = require('./convert')
+const podcastSchama = require('../models/transcraption')
+
+// const fs = require('fs');
+const path = require('path');
 
 const getMethod =async (req, res) => {
     try 
@@ -16,7 +19,15 @@ const postMethod =async (req, res) => {
     {
         console.log(req.file);
         
-        return res.status(200).json({message: "This is a post method"})
+        // const filePath = `C:\\Users\\hp\Desktop\\Transcriber\\backend\\uploads\\${req.file.filename}`
+
+        // const filepath = `..\\${req.file.path}`
+
+        const filePath = path.join(__dirname, "../uploads", req.file.filename);
+
+        await conversion(filePath , "")
+        
+        return res.status(200).json({message: "This is a post method of transcribe!" })
         
     } 
     catch (error) 

@@ -1,11 +1,15 @@
 
 import './App.css';
 
-// import {useState} from 'react'
+import useAxios from './API/useAxios'
+import Main from './Components/Main'
 
 function App() {
 
-  // const [file , setFile] = useState(null)
+  const { data, isLoading, error } = useAxios({
+    method: 'GET',
+    url: 'https://jsonplaceholder.typicode.com/users'
+  });
 
   const handleFile = (e)=>{
 
@@ -16,7 +20,8 @@ function App() {
   return (
    <>
 
-   <input type="file" accept="audio/*" onChange={(e)=>handleFile(e)} />
+   {/* <input type="file" accept="audio/*" onChange={(e)=>handleFile(e)} /> */}
+   <Main />
 
    </>
   );

@@ -8,6 +8,6 @@ const router = express.Router()
 
 router.get( '/' , getMethod )
 
-router.post( '/', upload.single('audio') , postMethod )
+router.post( '/',upload.single('audio') ,  postMethod )
 
 module.exports = router

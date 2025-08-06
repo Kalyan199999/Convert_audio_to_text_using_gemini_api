@@ -4,14 +4,19 @@ const {
   createPartFromUri,
 } = require( "@google/genai" );
 
-const ai = new GoogleGenAI({});
+
+const ai = new GoogleGenAI({apiKey:process.env.GEMINI_API_KEY});
 
 const conversion = async ( filepath ,prompt)=>
 {
-  const myfile = await ai.files.upload({
-    file: filepath,
-    config: { mimeType: "audio/mp3" },
-  });
+  
+    const uploadedFile = await ai.files.upload({
+      file: filepath,
+      config: { mimeType: 'audio/mpeg' }, // or audio/wav or whatever your file really is
+    });
+
+  console.log(uploadedFile);
+  
 
 //   const response = await ai.models.generateContent(
 //     {
@@ -23,7 +28,7 @@ const conversion = async ( filepath ,prompt)=>
 //     }
 //     );
 
-  console.log(response.text);
+  // console.log(response.text);
 
 }
 
