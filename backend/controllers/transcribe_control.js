@@ -1,7 +1,6 @@
 const conversion = require('./convert')
-const podcastSchama = require('../models/transcraption')
+const Podcast = require('../models/transcraption')
 
-// const fs = require('fs');
 const path = require('path');
 
 const getMethod =async (req, res) => {
@@ -17,22 +16,42 @@ const getMethod =async (req, res) => {
 const postMethod =async (req, res) => {
     try 
     {
-        console.log(req.file);
-        
-        // const filePath = `C:\\Users\\hp\Desktop\\Transcriber\\backend\\uploads\\${req.file.filename}`
-
-        // const filepath = `..\\${req.file.path}`
-
         const filePath = path.join(__dirname, "../uploads", req.file.filename);
 
-        await conversion(filePath , "")
+        const { summary } = req.body
+ 
+        let prompt = "Write the summary of the audio file!";
+
+        if(!summary)
+        {
+            prompt = "Write the complete description of the audio file!";
+        }
+
+        const result = await conversion( filePath , prompt )
+
+        console.log(result);
+
+        if( !result.ok ){
+
+            return res.status(404).json({
+                message: "Error in API call!",
+                ok:false
+            })
+        }
         
-        return res.status(200).json({message: "This is a post method of transcribe!" })
+        return res.status(200).json({
+            message: "This is a post method of transcribe!",
+            ok:true,
+            data:result.text
+         })
         
     } 
     catch (error) 
     {
-        return res.status(500).json({message: "This is a post method error"})
+        return res.status(404).json({
+            message: "This is a post method error",
+            ok:false
+        })
     }
 }
 

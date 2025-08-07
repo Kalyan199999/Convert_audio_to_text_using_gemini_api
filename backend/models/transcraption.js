@@ -22,5 +22,7 @@ const podcastSchama = mongoose.Schema(
     
     {timestamps: true} )
 
+const Podcast = mongoose.model('Podcast', podcastSchama);
 
-module.exports = podcastSchama;
+
+module.exports = Podcast;
