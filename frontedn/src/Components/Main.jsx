@@ -1,5 +1,6 @@
 import useAxios from '../API/useAxios';
 import { useState } from 'react';
+import { jsPDF } from "jspdf";   // ✅ Import jsPDF
 
 function Main() 
 {
@@ -62,6 +63,26 @@ function Main()
     setLoading(false)
 
 
+  };
+
+
+   // ✅ Generate PDF from transcript
+  const handleDownloadPDF = () => {
+    if (!trans_data.ok || !trans_data.data) {
+      alert("No transcript available to download!");
+      return;
+    }
+
+    const doc = new jsPDF();
+    doc.setFontSize(12);
+    doc.text("Audio Transcription", 10, 10); // Title
+    doc.setFontSize(10);
+
+    // ✅ Automatically split long text into pages
+    const textLines = doc.splitTextToSize(trans_data.data, 180);
+    doc.text(textLines, 10, 20);
+
+    doc.save("transcript.pdf");
   };
 
   return (
@@ -173,6 +194,21 @@ function Main()
             >
               Transcribe
             </button>
+
+            {/* ✅ Download PDF Button */}
+
+            {
+              trans_data.ok && 
+              <button
+                    type="button"
+                    onClick={handleDownloadPDF}
+                    className="px-6 py-2 bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition duration-300 ease-in-out"
+              >
+                Download PDF
+              </button>
+            }
+            
+        
           </form>
 
 
