@@ -87,11 +87,11 @@ function Main()
 
   return (
 
-    <div className='w-full min-h-screen flex flex-col items-center justify-start border-2 border-red-700 relative'>
+    <div className='w-full min-h-screen flex flex-col items-center justify-start  relative bg-gray-200'>
 
       {/* Main content container */}
 
-      <div className="w-1/2 min-h-[80vh] max-h-[80vh] px-5 py-6 my-4 bg-gray-800 rounded-lg shadow-lg flex flex-col items-center justify-start border border-red-700 overflow-y-auto scroll-smooth hide-scrollbar">
+      <div className="w-1/2 min-h-[80vh] max-h-[80vh] px-5 py-6 my-4 bg-gray-800 rounded-lg shadow-lg flex flex-col items-center justify-start overflow-y-auto scroll-smooth hide-scrollbar">
           {
           trans_data.ok ? (
             <p className="text-white text-lg leading-relaxed whitespace-pre-line">
@@ -114,6 +114,7 @@ function Main()
   </div>
           
         {/* Form fixed at bottom */}
+
           <form
             method="POST"
             encType="multipart/form-data"
@@ -125,8 +126,6 @@ function Main()
                 {selectedFile.name}
               </span>
             )}
-          
-            {/* Hidden File Input */}
 
             {
                 selectedFile ? (
@@ -140,7 +139,7 @@ function Main()
                   >
                     X </button>
                 ) : (
-                  // What to show if no file is selected
+                  // input file is selected
                   <>
                     <input
                       type="file"
@@ -163,7 +162,7 @@ function Main()
 
             
           
-            {/* Buttons in same row */}
+            {/* Buttons to display in the same row */}
             <button
               className={`px-5 py-2 bg-blue-500 hover:bg-blue-400 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out ${isSummary===true && 'border-2 border-red-600'}`}
               onClick={(e) => {
@@ -197,7 +196,7 @@ function Main()
               Transcribe
             </button>
 
-            {/* ✅ Download PDF Button */}
+            {/* Download PDF Button */}
 
             {
               trans_data.ok && 
