@@ -165,7 +165,7 @@ function Main()
           
             {/* Buttons in same row */}
             <button
-              className="px-5 py-2 bg-blue-500 hover:bg-blue-400 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out"
+              className={`px-5 py-2 bg-blue-500 hover:bg-blue-400 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out ${isSummary===true && 'border-2 border-red-600'}`}
               onClick={(e) => {
                 e.preventDefault();
                 setSummary(true);
@@ -175,14 +175,16 @@ function Main()
             </button>
           
             <button
-              className="px-5 py-2 bg-blue-500 hover:bg-blue-400 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out"
-              onClick={(e) => {
-                e.preventDefault();
-                setSummary(false);
-              }}
+                className={`px-5 py-2 bg-blue-500 hover:bg-blue-400 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out ${isSummary===false && 'border-2 border-red-600'}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (isSummary === false) return; 
+                  setSummary(false);
+                }}
             >
               Description
             </button>
+
           
             <button
               type="submit"
