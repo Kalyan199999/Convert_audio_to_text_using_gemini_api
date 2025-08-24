@@ -1,5 +1,7 @@
 import useAxios from '../API/useAxios';
 import { useState } from 'react';
+
+import { toast } from 'react-toastify';
 import { jsPDF } from "jspdf";   // ✅ Import jsPDF
 
 function Main() 
@@ -19,8 +21,15 @@ function Main()
   const [isSummary , setSummary] = useState(true);
 
    const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
+    try {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      toast.success('File uploaded successfully!')
+      
+    } 
+    catch (error) {
+      toast.warning('Error in the File uploading!')
+    }
   };
 
   const handleSubmit =async (e) => 
@@ -34,7 +43,7 @@ function Main()
 
        if (!selectedFile) 
         {
-            alert("Please select an audio file.");
+            toast.warning("Please select an audio file.");
             return;
         }
     
@@ -69,20 +78,27 @@ function Main()
    // ✅ Generate PDF from transcript
   const handleDownloadPDF = () => {
     if (!trans_data.ok || !trans_data.data) {
-      alert("No transcript available to download!");
+      toast.warning("No transcript available to download!");
       return;
     }
 
-    const doc = new jsPDF();
-    doc.setFontSize(12);
-    doc.text("Audio Transcription", 10, 10); // Title
-    doc.setFontSize(10);
-
-    // ✅ Automatically split long text into pages
-    const textLines = doc.splitTextToSize(trans_data.data, 180);
-    doc.text(textLines, 10, 20);
-
-    doc.save("transcript.pdf");
+    try {
+      const doc = new jsPDF();
+      doc.setFontSize(12);
+      doc.text("Audio Transcription", 10, 10); // Title
+      doc.setFontSize(10);
+  
+      // ✅ Automatically split long text into pages
+      const textLines = doc.splitTextToSize(trans_data.data, 180);
+      doc.text(textLines, 10, 20);
+  
+      doc.save("transcript.pdf");
+      toast.success('File downloaded successfully!')
+    } 
+    catch (error) 
+    {
+      toast.warning("Error downloading file!") 
+    }
   };
 
   return (
@@ -118,7 +134,7 @@ function Main()
           <form
             method="POST"
             encType="multipart/form-data"
-            className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-1/2 px-5 py-4 bg-white border-t border-gray-300 shadow-md flex flex-row items-center justify-center gap-x-4 z-50"
+            className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-1/2 px-5 py-4 bg-white border-t border-gray-300 shadow-md flex flex-row items-center justify-center gap-x-4 z-50 rounded-xl"
           >
             {/* Display Selected File Name */}
             {selectedFile && (
@@ -135,6 +151,7 @@ function Main()
                   onClick={(e)=>{
                     e.preventDefault()
                     setSelectedFile(null)
+                    toast.success('File Deleted Successfully!')
                   }}
                   >
                     X </button>
@@ -168,6 +185,7 @@ function Main()
               onClick={(e) => {
                 e.preventDefault();
                 setSummary(true);
+                toast.success('Summary is selected!')
               }}
             >
               Summary
@@ -179,6 +197,7 @@ function Main()
                   e.preventDefault();
                   if (isSummary === false) return; 
                   setSummary(false);
+                  toast.success('Description is selected!')
                 }}
             >
               Description
@@ -187,11 +206,14 @@ function Main()
           
             <button
               type="submit"
-              className="px-6 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-300 ease-in-out"
+              className={`px-6 py-2  text-white rounded-lg shadow-md  transition duration-300 ease-in-out ${selectedFile === null ? " bg-gray-600" : "bg-green-600 hover:bg-green-700"}` }
+              
               onClick={(e) => {
                 e.preventDefault();
                 handleSubmit(e);
               }}
+
+              disabled = { selectedFile === null }
             >
               Transcribe
             </button>

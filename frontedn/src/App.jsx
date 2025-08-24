@@ -4,6 +4,8 @@ import './App.css';
 import useAxios from './API/useAxios'
 import Main from './Components/Main'
 
+  import { ToastContainer } from 'react-toastify';
+
 function App() {
 
   const { data, isLoading, error } = useAxios({
@@ -22,6 +24,7 @@ function App() {
 
    {/* <input type="file" accept="audio/*" onChange={(e)=>handleFile(e)} /> */}
    <Main />
+   <ToastContainer />
 
    </>
   );
